@@ -1,0 +1,28 @@
+tower_id,tower_name,city,region,country,latitude,longitude,capacity_users,technology,installation_date,status,etat_batterie
+T001,Antenne_OUA_1,Ouagadougou,Centre,Burkina Faso,12.3522,-1.4881,500,2G,2018-04-26,Actif,Bon
+T002,Antenne_OUA_2,Ouagadougou,Centre,Burkina Faso,12.3879,-1.5233,500,4G,2010-12-23,Actif,Bon
+T003,Antenne_OUA_3,Ouagadougou,Centre,Burkina Faso,12.3303,-1.5676,500,3G,2012-08-10,Actif,Bon
+T004,Antenne_OUA_4,Ouagadougou,Centre,Burkina Faso,12.3205,-1.4966,800,4G,2014-09-15,Actif,Bon
+T005,Antenne_OUA_5,Ouagadougou,Centre,Burkina Faso,12.3748,-1.5124,500,3G,2017-10-30,Actif,Bon
+T006,Antenne_BOB_1,Bobo-Dioulasso,Hauts-Bassins,Burkina Faso,11.1292,-4.2509,800,4G,2011-02-23,Actif,Bon
+T007,Antenne_BOB_2,Bobo-Dioulasso,Hauts-Bassins,Burkina Faso,11.2103,-4.3267,1000,4G,2012-12-19,Actif,Moyen
+T008,Antenne_BOB_3,Bobo-Dioulasso,Hauts-Bassins,Burkina Faso,11.1453,-4.3296,2000,2G,2014-03-31,Actif,Bon
+T009,Antenne_BOB_4,Bobo-Dioulasso,Hauts-Bassins,Burkina Faso,11.1575,-4.2954,2000,4G,2016-06-22,Actif,Bon
+T010,Antenne_BOB_5,Bobo-Dioulasso,Hauts-Bassins,Burkina Faso,11.1703,-4.3188,800,4G,2010-11-23,Actif,Faible
+T011,Antenne_KOU_1,Koudougou,Centre-Ouest,Burkina Faso,12.2612,-2.4028,1500,4G,2015-02-01,Actif,Bon
+T012,Antenne_KOU_2,Koudougou,Centre-Ouest,Burkina Faso,12.2292,-2.3801,1000,4G,2012-05-08,Actif,Moyen
+T013,Antenne_KOU_3,Koudougou,Centre-Ouest,Burkina Faso,12.2456,-2.3382,500,4G,2017-02-13,Actif,Moyen
+T014,Antenne_KOU_4,Koudougou,Centre-Ouest,Burkina Faso,12.22,-2.3653,800,4G,2014-04-04,Actif,Faible
+T015,Antenne_KOU_5,Koudougou,Centre-Ouest,Burkina Faso,12.2592,-2.4121,2000,3G,2017-09-05,Actif,Moyen
+T016,Antenne_ACC_1,Accra,Greater Accra,Ghana,5.6145,-0.2199,500,3G,2019-03-21,Actif,Bon
+T017,Antenne_ACC_2,Accra,Greater Accra,Ghana,5.5602,-0.1421,1000,2G,2012-05-14,Maintenance,Bon
+T018,Antenne_ACC_3,Accra,Greater Accra,Ghana,5.6503,-0.1562,1000,3G,2017-05-08,Actif,Faible
+T019,Antenne_ACC_4,Accra,Greater Accra,Ghana,5.5842,-0.2272,1500,3G,2012-12-20,Actif,Moyen
+T020,Antenne_KUM_1,Kumasi,Ashanti,Ghana,6.7068,-1.6304,2000,4G,2018-05-18,Actif,Faible
+T021,Antenne_KUM_2,Kumasi,Ashanti,Ghana,6.6506,-1.6249,1500,4G,2012-06-17,Inactif,Bon
+T022,Antenne_KUM_3,Kumasi,Ashanti,Ghana,6.6418,-1.5835,1500,2G,2018-06-23,Actif,Bon
+T023,Antenne_KUM_4,Kumasi,Ashanti,Ghana,6.6643,-1.6081,800,4G,2016-09-08,Actif,Bon
+T024,Antenne_TAM_1,Tamale,Northern,Ghana,9.382,-0.8373,1500,4G,2012-10-26,Inactif,Faible
+T025,Antenne_TAM_2,Tamale,Northern,Ghana,9.4055,-0.8708,500,2G,2017-08-24,Maintenance,Moyen
+T026,Antenne_TAM_3,Tamale,Northern,Ghana,9.4478,-0.8118,1000,2G,2013-04-17,Actif,Bon
+T027,Antenne_TAM_4,Tamale,Northern,Ghana,9.4447,-0.7998,1000,4G,2018-07-18,Actif,Faible

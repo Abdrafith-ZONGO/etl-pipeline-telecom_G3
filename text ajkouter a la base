@@ -1,0 +1,12 @@
+USE edw_sahel_telecom;
+
+SHOW PROCEDURE STATUS
+WHERE Db = 'edw_sahel_telecom';
+
+
+
+
+
+
+CALL sp_populate_dim_date('2020-01-01', '2035-12-31');
+ROLLBACK;

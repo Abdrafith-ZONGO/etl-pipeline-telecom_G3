@@ -1,0 +1,11 @@
+plan_id,plan_name,country,monthly_fee,data_quota_gb,call_minutes,sms_quota,type
+P001,Starter BF,Burkina Faso,2000,1,60,50,Prépayé
+P002,Basic BF,Burkina Faso,5000,3,120,100,Prépayé
+P003,Standard BF,Burkina Faso,10000,7,300,200,Postpayé
+P004,Premium BF,Burkina Faso,20000,20,600,500,Postpayé
+P005,Business BF,Burkina Faso,35000,50,1200,1000,Entreprise
+P006,Starter GH,Ghana,15,1,60,50,Prépayé
+P007,Basic GH,Ghana,35,3,120,100,Prépayé
+P008,Standard GH,Ghana,70,7,300,200,Postpayé
+P009,Premium GH,Ghana,140,20,600,500,Postpayé
+P010,Business GH,Ghana,250,50,1200,1000,Entreprise

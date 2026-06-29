@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  mysql-telecom:
+    image: mysql:8.0
+    container_name: mysql_edw_telecom
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_telecom_data:/var/lib/mysql
+
+volumes:
+  mysql_telecom_data:
