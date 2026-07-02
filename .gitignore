@@ -22,8 +22,8 @@ telecom_data/
 # Base de données locale pour déploiement gratuit
 !cloud_data/kpis.db
 
-# Outputs temporaires ou lourds du modèle
-churn_model_outputs/top_500_abonnes_a_risque.csv
+# Outputs temporaires ou lourds du modèle (mais on garde le top 500 pour le Dashboard)
+!churn_model_outputs/top_500_abonnes_a_risque.csv
 
 # IDE et OS
 .vscode/
