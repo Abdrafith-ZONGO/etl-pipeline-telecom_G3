@@ -292,7 +292,7 @@ def transform_incidents(df, valid_towers):
 def load_dim_plan(conn, df):
     """
     Charge la dimension Plan via la procédure stockée SCD Type 2
-    (sp_upsert_plan_scd2 — définie dans triggers_and_procedures.sql).
+    (sp_upsert_plan_scd2 - définie dans triggers_and_procedures.sql).
     Chaque appel insère la version initiale, ou crée une nouvelle version
     si le tarif a changé depuis le dernier chargement.
     """
@@ -313,7 +313,7 @@ def load_dim_plan(conn, df):
 def load_dim_tower(conn, df):
     """
     Charge la dimension Tower via la procédure stockée SCD Type 1
-    (sp_upsert_tower_scd1 — écrasement direct, pas d'historique conservé,
+    (sp_upsert_tower_scd1 - écrasement direct, pas d'historique conservé,
     cohérent avec le principe SCD1 vu au Module 2 du cours).
     """
     cur = conn.cursor()

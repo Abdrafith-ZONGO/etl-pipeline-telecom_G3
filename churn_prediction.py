@@ -1,5 +1,5 @@
 """
-Modèle prédictif de churn avancé — EDW Sahel Telecom
+Modèle prédictif de churn avancé - EDW Sahel Telecom
 Version 2.0 avec MySQL, XGBoost, SMOTE et SHAP
 """
 import pandas as pd

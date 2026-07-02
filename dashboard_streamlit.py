@@ -17,7 +17,7 @@ st.set_page_config(
 )
 
 # =====================================================================
-# CSS — Design clair, moderne et professionnel
+# CSS - Design clair, moderne et professionnel
 # =====================================================================
 st.markdown("""
 <style>
@@ -113,7 +113,7 @@ def plotly_style():
     )
 
 # =====================================================================
-# CONNEXION MYSQL OU SQLITE (CLOUD) — avec cache 10 minutes
+# CONNEXION MYSQL OU SQLITE (CLOUD) - avec cache 10 minutes
 # =====================================================================
 DB = dict(host="127.0.0.1", user="root", password="1234", database="edw_sahel_telecom", port=3306)
 
@@ -138,7 +138,7 @@ def sql(query: str) -> pd.DataFrame:
                 st.error(f"Erreur d'exécution SQLite (Mode hors-ligne) : {e_sqlite}")
                 return pd.DataFrame()
         else:
-            st.error(f"Erreur de connexion MySQL : {e} — La base locale (SQLite) est également introuvable. Lancez `py export_kpis_for_cloud.py` au préalable.")
+            st.error(f"Erreur de connexion MySQL : {e} - La base locale (SQLite) est également introuvable. Lancez `py export_kpis_for_cloud.py` au préalable.")
             return pd.DataFrame()
 
 # =====================================================================
@@ -172,7 +172,7 @@ with st.sidebar:
 # PAGE 1 – VUE D'ENSEMBLE
 # =====================================================================
 if page == "Vue d'ensemble":
-    st.title("Vue d'ensemble — Indicateurs Exécutifs")
+    st.title("Vue d'ensemble - Indicateurs Exécutifs")
     st.markdown(
         "<div class='page-header'>Suivi des métriques stratégiques de Sahel Telecom : revenu moyen par abonné, taux de résiliation et évolution mensuelle, ventilés par pays.</div>",
         unsafe_allow_html=True
@@ -228,7 +228,7 @@ if page == "Vue d'ensemble":
     col1, col2 = st.columns(2)
 
     with col1:
-        st.subheader("Revenu Moyen par Abonné (FCFA) — par mois")
+        st.subheader("Revenu Moyen par Abonné (FCFA) - par mois")
         fig = px.line(df_arpu_mois, x='periode', y='arpu_fcfa', color='country',
                       color_discrete_sequence=PALETTE_MULTI, markers=True)
         fig.update_layout(**plotly_style(), xaxis_title="", yaxis_title="FCFA", legend_title="Pays")
@@ -237,7 +237,7 @@ if page == "Vue d'ensemble":
 
     with col2:
         if not df_churn_mois.empty:
-            st.subheader("Taux de Résiliation mensuel (%) — par pays")
+            st.subheader("Taux de Résiliation mensuel (%) - par pays")
             fig2 = px.area(df_churn_mois, x='periode', y='taux_pct', color='country',
                            color_discrete_sequence=PALETTE_MULTI)
             fig2.update_layout(**plotly_style(), xaxis_title="", yaxis_title="Taux (%)", legend_title="Pays")
@@ -505,7 +505,7 @@ elif page == "Prédiction IA – Churn":
             c4.metric("Rappel (Churn)", f"{rap:.1f} %")
             c5.metric("Score F1", f"{f1:.1f} %")
         except Exception:
-            st.info("Métriques non disponibles — lancez d'abord `py churn_prediction.py`.")
+            st.info("Métriques non disponibles - lancez d'abord `py churn_prediction.py`.")
 
         st.markdown("---")
         col_a, col_b = st.columns([1, 2])

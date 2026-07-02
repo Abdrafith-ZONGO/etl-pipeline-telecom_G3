@@ -1,4 +1,4 @@
-# ARCHITECTURE ET DOSSIER TECHNIQUE DE RÉFÉRENCE — PROJET DÉCISIONNEL SAHEL TELECOM
+# ARCHITECTURE ET DOSSIER TECHNIQUE DE RÉFÉRENCE - PROJET DÉCISIONNEL SAHEL TELECOM
 
 Ce document technique présente de manière exhaustive l'architecture globale, la matrice des versions, la structure physique de l'entrepôt, le dictionnaire de données, les détails de code de chaque fichier, les résultats réels du modèle de Machine Learning et la procédure de reproduction pas à pas.
 

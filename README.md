@@ -1,4 +1,4 @@
-# 📡 Decision Support & Predictive System — Sahel Telecom
+# 📡 Decision Support & Predictive System - Sahel Telecom
 
 🔗 **[Accéder au Dashboard en Direct (Streamlit Cloud)](https://sahel-telecom-dashboard.streamlit.app/)**
 

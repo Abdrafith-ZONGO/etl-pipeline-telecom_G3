@@ -139,7 +139,7 @@ BEGIN
     IF NEW.event_type = 'Data' AND NEW.data_mb = 0 THEN
         INSERT INTO etl_rejected_rows (source_table, raw_data, rejection_reason)
         VALUES ('fact_usage', CONCAT('usage_id=', NEW.usage_id),
-                'Événement Data avec data_mb=0 — incohérence métier');
+                'Événement Data avec data_mb=0 - incohérence métier');
     END IF;
 END//
 
@@ -319,7 +319,7 @@ DELIMITER ;
 
 
 -- ============================================================
---  E. PROCÉDURES STOCKÉES — SCD TYPE 2
+--  E. PROCÉDURES STOCKÉES - SCD TYPE 2
 --  (dim_subscriber, dim_plan)
 -- ============================================================
 
@@ -461,7 +461,7 @@ DELIMITER ;
 
 
 -- ============================================================
---  F. PROCÉDURE STOCKÉE — SCD TYPE 1 (dim_tower)
+--  F. PROCÉDURE STOCKÉE - SCD TYPE 1 (dim_tower)
 -- ============================================================
 
 DELIMITER //
@@ -585,7 +585,7 @@ DELIMITER ;
 
 
 -- ============================================================
---  H. PROCÉDURE RGPD — DROIT À L'EFFACEMENT
+--  H. PROCÉDURE RGPD - DROIT À L'EFFACEMENT
 --  (cf. Module 6 du cours : le DW est non-volatile par design,
 --   donc on pseudonymise plutôt que supprimer physiquement)
 -- ============================================================

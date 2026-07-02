@@ -144,7 +144,7 @@ CREATE TABLE dim_date (
     annee_trimestre   VARCHAR(10)  NOT NULL COMMENT 'Ex: 2024-Q1',
     heure             TINYINT      NULL     COMMENT 'Optionnel pour granularité heure',
     tranche_horaire   VARCHAR(30)  NULL     COMMENT 'Nuit | Matin | Après-midi | Soir'
-) ENGINE=InnoDB COMMENT='Dimension temporelle — pré-remplie 2020-2030';
+) ENGINE=InnoDB COMMENT='Dimension temporelle - pré-remplie 2020-2030';
 
 CREATE INDEX idx_dim_date_annee       ON dim_date(annee);
 CREATE INDEX idx_dim_date_mois        ON dim_date(mois, annee);
@@ -270,7 +270,7 @@ CREATE INDEX idx_dim_loc_country     ON dim_localisation(country);
 
 -- ─────────────────────────────────────────────────────────────
 -- FACT_USAGE : table de faits principale (transactionnelle)
--- 550 000+ lignes — une ligne = un événement réseau
+-- 550 000+ lignes - une ligne = un événement réseau
 -- ─────────────────────────────────────────────────────────────
 CREATE TABLE fact_usage (
     usage_sk          BIGINT       NOT NULL AUTO_INCREMENT,
@@ -279,7 +279,7 @@ CREATE TABLE fact_usage (
     tower_sk          INT          NOT NULL,
     plan_sk           INT          NOT NULL,
     location_sk       INT          NOT NULL,
-    usage_id          VARCHAR(20)  NOT NULL COMMENT 'ID source — dimension dégénérée',
+    usage_id          VARCHAR(20)  NOT NULL COMMENT 'ID source - dimension dégénérée',
     duration_sec      INT          NOT NULL DEFAULT 0 COMMENT 'Durée en secondes (0 si SMS/Data)',
     duration_min      DECIMAL(8,2) GENERATED ALWAYS AS (duration_sec / 60.0) STORED,
     data_mb           DECIMAL(12,4) NOT NULL DEFAULT 0,
@@ -293,7 +293,7 @@ CREATE TABLE fact_usage (
     PRIMARY KEY (usage_sk, date_sk)   -- clé composite obligatoire avec partitionnement
 )
 ENGINE=InnoDB
-COMMENT='Faits usage réseau — granularité : 1 ligne = 1 événement'
+COMMENT='Faits usage réseau - granularité : 1 ligne = 1 événement'
 PARTITION BY RANGE (date_sk) (
     PARTITION p2023 VALUES LESS THAN (20240101),
     PARTITION p2024 VALUES LESS THAN (20250101),
@@ -345,10 +345,10 @@ CREATE INDEX idx_fi_severity     ON fact_incident(severity);
 CREATE INDEX idx_fi_type         ON fact_incident(incident_type);
 
 -- ============================================================
---  COUCHE SÉMANTIQUE — VUES ANALYTIQUES (pour Excel / BI)
+--  COUCHE SÉMANTIQUE - VUES ANALYTIQUES (pour Excel / BI)
 -- ============================================================
 
--- Vue 1 : KPI 1 — Taux de churn mensuel
+-- Vue 1 : KPI 1 - Taux de churn mensuel
 CREATE OR REPLACE VIEW v_kpi_churn_mensuel AS
 SELECT
     d.annee,
@@ -370,7 +370,7 @@ WHERE s.is_current = 1
 GROUP BY d.annee, d.mois, d.nom_mois, d.annee_trimestre,
          s.country, s.city, s.segment, p.plan_name, p.type_abonnement;
 
--- Vue 2 : KPI 2 — ARPU (revenu moyen par abonné)
+-- Vue 2 : KPI 2 - ARPU (revenu moyen par abonné)
 CREATE OR REPLACE VIEW v_kpi_arpu AS
 SELECT
     d.annee,
@@ -394,7 +394,7 @@ WHERE fu.amount_fcfa IS NOT NULL
 GROUP BY d.annee, d.mois, d.nom_mois, d.annee_trimestre,
          s.country, s.city, p.plan_name, p.type_abonnement;
 
--- Vue 3 : KPI 3 — Taux d'utilisation réseau par antenne
+-- Vue 3 : KPI 3 - Taux d'utilisation réseau par antenne
 CREATE OR REPLACE VIEW v_kpi_utilisation_reseau AS
 SELECT
     d.annee,
@@ -419,7 +419,7 @@ GROUP BY d.annee, d.mois, d.nom_mois,
          t.tower_id, t.tower_name, t.city, t.country,
          t.technology, t.capacity_users;
 
--- Vue 4 : KPI 4 — Taux d'incidents qualité par antenne
+-- Vue 4 : KPI 4 - Taux d'incidents qualité par antenne
 CREATE OR REPLACE VIEW v_kpi_incidents_qualite AS
 SELECT
     d.annee,
@@ -442,7 +442,7 @@ JOIN dim_date     d ON fi.date_sk  = d.date_sk
 GROUP BY d.annee, d.mois, d.nom_mois,
          t.tower_id, t.tower_name, t.city, t.country, t.technology;
 
--- Vue 5 : KPI 5 — Durée moyenne des appels
+-- Vue 5 : KPI 5 - Durée moyenne des appels
 CREATE OR REPLACE VIEW v_kpi_duree_appels AS
 SELECT
     d.annee,
@@ -469,7 +469,7 @@ GROUP BY d.annee, d.mois, d.nom_mois, d.annee_trimestre,
          d.tranche_horaire, s.country, s.city,
          s.segment, fu.network_type;
 
--- Vue 6 : KPI 6 — Taux de rétention par offre
+-- Vue 6 : KPI 6 - Taux de rétention par offre
 CREATE OR REPLACE VIEW v_kpi_retention_par_offre AS
 SELECT
     p.plan_name,
@@ -488,7 +488,7 @@ JOIN dim_plan       p ON s.plan_id = p.plan_id AND p.is_current = 1
 WHERE s.is_current = 1
 GROUP BY p.plan_name, p.type_abonnement, p.country, p.monthly_fee;
 
--- Vue 7 : KPI 7 — Volume de données consommées par région
+-- Vue 7 : KPI 7 - Volume de données consommées par région
 CREATE OR REPLACE VIEW v_kpi_data_par_region AS
 SELECT
     d.annee,
