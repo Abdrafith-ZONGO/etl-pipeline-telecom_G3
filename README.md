@@ -67,8 +67,8 @@ py -m streamlit run dashboard_streamlit.py
 
 L'application decisionnelle s'ouvrira automatiquement à l'adresse [http://localhost:8501](http://localhost:8501).
 
-### 5. (Optionnel) Déploiement Gratuit sur le Cloud
-Pour héberger l'application gratuitement sur Streamlit Cloud sans utiliser le lourd serveur MySQL, exécutez ce script qui exportera les KPIs agrégés vers une micro-base SQLite locale :
+### 5. Procédure de Déploiement Cloud (Pour reproduction)
+L'application est déjà déployée publiquement. Cependant, si vous souhaitez reproduire ce déploiement sur votre propre compte Streamlit Cloud (sans utiliser le lourd serveur MySQL), exécutez ce script pour exporter les KPIs agrégés vers une micro-base SQLite locale :
 ```bash
 py export_kpis_for_cloud.py
 ```
