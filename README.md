@@ -1,5 +1,7 @@
 # 📡 Decision Support & Predictive System — Sahel Telecom
 
+🔗 **[Accéder au Dashboard en Direct (Streamlit Cloud)](https://sahel-telecom-dashboard.streamlit.app/)**
+
 Ce projet implémente un système complet d'Informatique Décisionnelle (BI) et de Machine Learning (IA) pour l'opérateur **Sahel Telecom** (Burkina Faso) et sa filiale **GoldTel** (Ghana). 
 
 Il intègre un entrepôt de données décisionnel (EDW), un pipeline ETL automatisé, un modèle prédictif de Churn (XGBoost) et un Dashboard interactif haute performance (Streamlit).
@@ -29,8 +31,10 @@ Il intègre un entrepôt de données décisionnel (EDW), un pipeline ETL automat
 ├── generate_data.py           # Script de génération du jeu de données brut
 ├── etl_pipeline_3.py          # Pipeline ETL optimisé
 ├── refresh_kpis.py            # Matérialisation des KPIs pour le Dashboard
+├── export_kpis_for_cloud.py   # Extraction SQLite pour un déploiement Cloud gratuit
+├── cloud_data/                # Base SQLite allégée pour Streamlit Cloud
 ├── churn_prediction.py        # Entraînement et explicabilité du modèle ML
-├── dashboard_streamlit.py     # Code du Dashboard Streamlit
+├── dashboard_streamlit.py     # Code du Dashboard (hybride MySQL/SQLite)
 ├── requirements.txt           # Bibliothèques Python requises
 └── DOCUMENTATION_TECHNIQUE.md  # Rapport technique complet et détaillé
 ```
@@ -62,6 +66,13 @@ py -m streamlit run dashboard_streamlit.py
 ```
 
 L'application decisionnelle s'ouvrira automatiquement à l'adresse [http://localhost:8501](http://localhost:8501).
+
+### 5. (Optionnel) Déploiement Gratuit sur le Cloud
+Pour héberger l'application gratuitement sur Streamlit Cloud sans utiliser le lourd serveur MySQL, exécutez ce script qui exportera les KPIs agrégés vers une micro-base SQLite locale :
+```bash
+py export_kpis_for_cloud.py
+```
+Poussez ensuite le projet sur GitHub et connectez le dépôt à Streamlit Community Cloud.
 
 ---
 *Projet réalisé dans le cadre du Master 1 Data Science / IFOAD - Groupe 3 - Promotion 2026.*

@@ -400,20 +400,31 @@ L'application decisionnelle s'ouvrira automatiquement à l'adresse [http://local
 
 ---
 
-## 11. STRATÉGIE DE DÉPLOIEMENT OPTIMISÉE (GRATUITE SUR LE CLOUD)
+## 11. RETOUR D'EXPÉRIENCE, DIFFICULTÉS ET STRATÉGIE DE DÉPLOIEMENT
 
-Afin de pallier la volumétrie importante de la base de données brute (qui est très onéreuse à héberger sur un serveur en ligne classique), une architecture "Serverless / Hors-ligne" a été pensée pour le déploiement.
+### 11.1. Liens du Projet en Production
+Le projet a été versionné et déployé avec succès sur des environnements Cloud :
+- **Code Source (GitHub) :** [https://github.com/Abdrafith-ZONGO/etl-pipeline-telecom_G3](https://github.com/Abdrafith-ZONGO/etl-pipeline-telecom_G3)
+- **Application BI (Live) :** [https://sahel-telecom-dashboard.streamlit.app/](https://sahel-telecom-dashboard.streamlit.app/)
 
-### Le principe :
-Le Dashboard final ne nécessite pas d'accéder aux millions de lignes brutes, il ne requiert que l'accès aux **tables de KPIs agrégées**, qui sont extrêmement légères.
+### 11.2. Difficultés Rencontrées : La Volumétrie des Données
+Lors du passage de la phase de développement local à la phase de déploiement en ligne, nous avons été confrontés à un défi architectural majeur : **la volumétrie des données brutes**.
+- Les fichiers sources CSV et la table de faits (`fact_usage`) contenant des millions de lignes pesaient plusieurs centaines de mégaoctets, rendant impossible leur hébergement sur des dépôts gratuits comme GitHub (limite fixée à 100 Mo).
+- Héberger une base de données MySQL complète en ligne pour exécuter ce Dashboard aurait engendré des **coûts d'infrastructure importants** (serveur VPS ou RDS) qui n'étaient pas envisageables dans ce contexte.
+- L'interrogation de ces gros volumes sur le Cloud ralentissait considérablement le tableau de bord.
 
-1. **Extraction des KPIs :** Le script `export_kpis_for_cloud.py` se connecte à la base de données MySQL locale et extrait les tables de KPIs au format natif **SQLite** dans le répertoire `/cloud_data`.
-2. **Dashboard Hybride :** L'application `dashboard_streamlit.py` est conçue pour d'abord tenter de joindre MySQL. Si ce dernier est inaccessible (ex: déploiement Cloud gratuit), le code charge la base SQLite extraite.
-3. **Hébergement Gratuit (Streamlit Community Cloud) :**
-   - Grâce au fichier `.gitignore`, les lourds fichiers initiaux `.csv` sont exclus. Seul le code et la minuscule base SQLite sont poussés sur **GitHub**.
-   - **Streamlit Community Cloud** se connecte ensuite au dépôt GitHub pour héberger l'interface BI **gratuitement, 24/7**, sans nécessité de configurer un lourd serveur de base de données.
+### 11.3. La Solution : Architecture "Micro-KPIs" et "Serverless"
+Pour surpasser cette difficulté budgétaire et technique, nous avons mis en place une stratégie d'optimisation poussée en séparant le "calcul lourd" (ETL) de la "présentation" (Dashboard) :
 
-**Pour exécuter cette méthode avant de déployer :**
+1. **Création de Mini-Tables (Matérialisation) :** Au lieu d'obliger le Dashboard à requêter les millions de lignes brutes, nous avons programmé le script `refresh_kpis.py`. Il pré-calcule l'ensemble des métriques métier et stocke les résultats finaux dans des **mini-tables agrégées** (ex: `kpi_arpu`, `kpi_duree_appels`).
+2. **Extraction vers SQLite (`export_kpis_for_cloud.py`) :** Juste avant le déploiement, ce script se connecte au serveur MySQL local, aspire *uniquement* ces petites tables de KPIs, et crée une micro-base de données portable au format **SQLite** (`cloud_data/kpis.db`).
+   - *Résultat exceptionnel :* La taille des données est passée de plus de **250 Mo** à un seul fichier de **1.5 Mo**.
+3. **Dashboard Hybride Intelligent :** Le fichier `dashboard_streamlit.py` a été adapté avec un mécanisme de **fallback**. En ligne, lorsqu'il ne trouve pas de serveur MySQL à disposition, il bascule instantanément sur la lecture de la base SQLite locale.
+4. **Déploiement 100% Gratuit :**
+   - L'ajout d'un filtre `.gitignore` strict a permis de pousser uniquement le code source et le fichier `.db` vers GitHub sans être bloqué.
+   - **Streamlit Community Cloud** a été connecté à ce dépôt GitHub pour déployer l'interface web instantanément, de façon totalement gratuite et fluide.
+
+**Commande pour générer la base Cloud en local :**
 ```bash
 py export_kpis_for_cloud.py
 ```
