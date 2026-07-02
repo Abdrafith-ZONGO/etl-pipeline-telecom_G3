@@ -1,0 +1,8 @@
+# Data Engineering & BI
+streamlit==1.32.0
+pandas==2.2.1
+pymysql==1.1.0
+sqlalchemy==2.0.28
+
+# Les autres librairies (pour le ML) sont déjà installées :
+# xgboost, imbalanced-learn, shap, scikit-learn

@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: sahel_telecom_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      # Cette astuce Docker permet d'injecter et exécuter les scripts SQL 
+      # automatiquement au premier démarrage dans le bon ordre !
+      - ./edw_sahel_telecom.sql:/docker-entrypoint-initdb.d/1_edw_sahel_telecom.sql
+      - ./populate_dim_date.sql:/docker-entrypoint-initdb.d/2_populate_dim_date.sql
+      - ./triggers_and_procedures.sql:/docker-entrypoint-initdb.d/3_triggers_and_procedures.sql
+
+volumes:
+  mysql_data:

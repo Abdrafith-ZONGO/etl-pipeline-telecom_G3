@@ -1,0 +1,147 @@
+@startuml
+title Architecture Complète de l'EDW - Sahel Telecom / GoldTel (A à Z)
+
+skinparam componentStyle rectangle
+skinparam packageStyle rectangle
+skinparam linetype ortho
+skinparam backgroundColor #FFFFFF
+
+' ==============================================
+' 1. SOURCES
+' ==============================================
+package "1. Sources (CSV bruts)" #F5F5F5 {
+    [subscribers.csv]
+    [usage.csv]
+    [plans.csv]
+    [towers.csv]
+    [incidents_qualite_legers.csv]
+}
+
+' ==============================================
+' 2. STAGING
+' ==============================================
+package "2. Staging (réception brute)" #FFF3E0 {
+    [stg_subscribers]
+    [stg_usage]
+    [stg_plans]
+    [stg_towers]
+    [stg_incidents]
+}
+
+' ==============================================
+' 3. CONTROLE ETL
+' ==============================================
+package "3. Contrôle ETL" #FFEBEE {
+    [etl_log] as LOG
+    [etl_rejected_rows] as REJ
+}
+
+' ==============================================
+' 4. EDW CORE (Étoile)
+' ==============================================
+package "4. EDW Core (Modèle en étoile)" #E3F2FD {
+    
+    package "Dimensions (SCD)" #BBDEFB {
+        [dim_subscriber] as DIM_SUB
+        [dim_date] as DIM_DATE
+        [dim_plan] as DIM_PLAN
+        [dim_tower] as DIM_TOWER
+        [dim_localisation] as DIM_LOC
+    }
+    
+    package "Faits (transactionnels)" #B2DFDB {
+        [fact_usage] as FACT_USAGE
+        [fact_incident] as FACT_INCIDENT
+    }
+}
+
+' ==============================================
+' 5. COUCHE SÉMANTIQUE (7 KPI)
+' ==============================================
+package "5. Couche Sémantique (7 vues KPI)" #FFF9C4 {
+    [v_kpi_churn_mensuel]
+    [v_kpi_arpu]
+    [v_kpi_utilisation_reseau]
+    [v_kpi_incidents_qualite]
+    [v_kpi_duree_appels]
+    [v_kpi_retention_par_offre]
+    [v_kpi_data_par_region]
+}
+
+' ==============================================
+' 6. CONSOMMATION
+' ==============================================
+package "6. Consommation (Reporting & Analytics)" #E8F5E9 {
+    [Dashboards Excel / Power BI]
+    [Modèle Prédictif Churn (ML)]
+}
+
+' ==============================================
+' FLUX (les flèches)
+' ==============================================
+
+' Sources -> Staging
+[subscribers.csv] --> [stg_subscribers]
+[usage.csv] --> [stg_usage]
+[plans.csv] --> [stg_plans]
+[towers.csv] --> [stg_towers]
+[incidents_qualite_legers.csv] --> [stg_incidents]
+
+' Staging -> Rejets (lignes invalides)
+[stg_subscribers] --> [etl_rejected_rows]
+[stg_usage] --> [etl_rejected_rows]
+[stg_plans] --> [etl_rejected_rows]
+[stg_towers] --> [etl_rejected_rows]
+[stg_incidents] --> [etl_rejected_rows]
+
+' Staging -> Dimensions (via procédures SCD)
+[stg_subscribers] --> [dim_subscriber] : "SP SCD Type 2"
+[stg_plans] --> [dim_plan] : "SP SCD Type 2"
+[stg_towers] --> [dim_tower] : "SP SCD Type 1"
+[stg_subscribers] --> [dim_localisation] : "villes uniques"
+[stg_towers] --> [dim_localisation] : "villes uniques"
+
+' Staging -> Faits (via Bulk Insert)
+[stg_usage] --> [fact_usage] : "BULK INSERT (5000 lignes)"
+[stg_incidents] --> [fact_incident] : "BULK INSERT (5000 lignes)"
+
+' Dimensions -> Faits (jointures)
+[dim_date] --> [fact_usage]
+[dim_subscriber] --> [fact_usage]
+[dim_plan] --> [fact_usage]
+[dim_tower] --> [fact_usage]
+[dim_localisation] --> [fact_usage]
+
+[dim_tower] --> [fact_incident]
+[dim_date] --> [fact_incident]
+[dim_localisation] --> [fact_incident]
+
+' EDW -> Vues KPI (les 7 indicateurs)
+[fact_usage] --> [v_kpi_churn_mensuel]
+[fact_usage] --> [v_kpi_arpu]
+[fact_usage] --> [v_kpi_utilisation_reseau]
+[fact_incident] --> [v_kpi_incidents_qualite]
+[fact_usage] --> [v_kpi_duree_appels]
+[fact_usage] --> [v_kpi_retention_par_offre]
+[fact_usage] --> [v_kpi_data_par_region]
+
+' Vues -> Dashboards et Machine Learning
+[v_kpi_churn_mensuel] --> [Dashboards Excel / Power BI]
+[v_kpi_arpu] --> [Dashboards Excel / Power BI]
+[v_kpi_utilisation_reseau] --> [Dashboards Excel / Power BI]
+[v_kpi_incidents_qualite] --> [Dashboards Excel / Power BI]
+[v_kpi_duree_appels] --> [Dashboards Excel / Power BI]
+[v_kpi_retention_par_offre] --> [Dashboards Excel / Power BI]
+[v_kpi_data_par_region] --> [Dashboards Excel / Power BI]
+
+[dim_subscriber] --> [Modèle Prédictif Churn (ML)] : "Features (âge, offre, churn...)"
+[fact_usage] --> [Modèle Prédictif Churn (ML)] : "Features (data, appels...)"
+
+' Logs ETL (traçabilité)
+[stg_subscribers] --> [etl_log]
+[stg_usage] --> [etl_log]
+[stg_plans] --> [etl_log]
+[stg_towers] --> [etl_log]
+[stg_incidents] --> [etl_log]
+
+@enduml

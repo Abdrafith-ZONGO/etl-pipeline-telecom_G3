@@ -1,0 +1,32 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environnements virtuels
+.venv/
+venv/
+ENV/
+env/
+
+# Logs du projet
+*.log
+etl_run.log
+
+# Données volumineuses (à ne surtout pas pousser sur GitHub)
+telecom_data/
+*.csv
+!churn_model_outputs/resultats_modeles_xgboost.csv
+!churn_model_outputs/importance_variables.csv
+
+# Base de données locale pour déploiement gratuit
+!cloud_data/kpis.db
+
+# Outputs temporaires ou lourds du modèle
+churn_model_outputs/top_500_abonnes_a_risque.csv
+
+# IDE et OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,16 @@
+Variable,Importance
+Genre (Encodé),0.38872683
+Segment Client (Encodé),0.2672443
+Âge du Client,0.18752775
+Pannes Réseau Subies,0.069803886
+Quota Internet (Go),0.024934925
+Prix du Forfait (FCFA),0.021695442
+Jours sans Activité,0.012562164
+Revenu Généré (FCFA),0.0115450425
+Internet Consommé (Mo),0.0071724304
+Durée des Appels (sec),0.0057440833
+Taux de Consommation Internet,0.0030431661
+SMS Envoyés,0.0
+Appels en Échec,0.0
+Taux d'Échec des Appels,0.0
+Pays (Encodé),0.0

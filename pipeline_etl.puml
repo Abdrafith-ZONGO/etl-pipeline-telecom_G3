@@ -1,0 +1,83 @@
+@startuml
+title Pipeline ETL - Sahel Telecom / GoldTel
+
+skinparam componentStyle rectangle
+skinparam linetype ortho
+skinparam backgroundColor #FFFFFF
+
+' ==============================================
+' 1. EXTRACTION (depuis les CSV)
+' ==============================================
+package "1. EXTRACT (Sources CSV)" #F5F5F5 {
+    [subscribers.csv]
+    [usage.csv]
+    [plans.csv]
+    [towers.csv]
+    [incidents_qualite_legers.csv]
+}
+
+' ==============================================
+' 2. TRANSFORMATION (nettoyage + enrichissement)
+' ==============================================
+package "2. TRANSFORM (Python / Pandas)" #FFF3E0 {
+    
+    [Nettoyage des données] as Nettoyage
+    [Standardisation des dates] as Dates
+    [Gestion des valeurs NULL] as NULL
+    [Enrichissement (tranche_age, zone_type...)] as Enrich
+    [Contrôle qualité / Rejets] as Controle
+    
+    Nettoyage --> Dates
+    Dates --> NULL
+    NULL --> Enrich
+    Enrich --> Controle
+}
+
+' ==============================================
+' 3. CHARGEMENT (dans l'EDW)
+' ==============================================
+package "3. LOAD (Chargement dans l'EDW)" #E3F2FD {
+    
+    package "Dimensions (SCD)" #BBDEFB {
+        [dim_subscriber]
+        [dim_plan]
+        [dim_tower]
+        [dim_localisation]
+        [dim_date]
+    }
+    
+    package "Faits (transactionnels)" #B2DFDB {
+        [fact_usage]
+        [fact_incident]
+    }
+}
+
+' ==============================================
+' FLUX
+' ==============================================
+
+' Sources -> Transformation
+[subscribers.csv] --> [Nettoyage]
+[usage.csv] --> [Nettoyage]
+[plans.csv] --> [Nettoyage]
+[towers.csv] --> [Nettoyage]
+[incidents_qualite_legers.csv] --> [Nettoyage]
+
+' Transformation -> Rejets
+[Controle] --> [etl_rejected_rows] : "lignes invalides"
+
+' Transformation -> Chargement (Dimensions)
+[Controle] --> [dim_subscriber] : "SP SCD Type 2"
+[Controle] --> [dim_plan] : "SP SCD Type 2"
+[Controle] --> [dim_tower] : "SP SCD Type 1"
+[Controle] --> [dim_localisation] : "villes uniques"
+[Controle] --> [dim_date] : "déjà chargée"
+
+' Transformation -> Chargement (Faits)
+[Controle] --> [fact_usage] : "BULK INSERT (5000 lignes)"
+[Controle] --> [fact_incident] : "BULK INSERT (5000 lignes)"
+
+' Logs ETL
+[Controle] --> [etl_log]
+
+@enduml

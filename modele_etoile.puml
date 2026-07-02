@@ -1,0 +1,128 @@
+@startuml
+!define table(x) entity x << (T,#FFAAAA) >>
+!define fact(x) entity x << (F,#FF9999) >>
+!define dim(x) entity x << (D,#AAAAFF) >>
+
+title Modèle en Étoile - EDW Sahel Telecom
+title Notation Chen : (1,N) = une dimension peut avoir plusieurs usages
+
+skinparam linetype ortho
+skinparam backgroundColor #FFFFFF
+
+' ==============================================
+' DIMENSIONS
+' ==============================================
+
+dim(dim_date) {
+    * date_sk : INT <<PK>>
+    --
+    date_complete : DATE
+    annee : SMALLINT
+    mois : TINYINT
+    trimestre : TINYINT
+    nom_mois : VARCHAR(20)
+    is_weekend : TINYINT(1)
+    tranche_horaire : VARCHAR(30)
+}
+
+dim(dim_subscriber) {
+    * subscriber_sk : INT <<PK>>
+    --
+    subscriber_id : VARCHAR(20) <<UK>>
+    first_name : VARCHAR(100)
+    last_name : VARCHAR(100)
+    age : TINYINT
+    tranche_age : VARCHAR(20)
+    city : VARCHAR(100)
+    country : VARCHAR(100)
+    segment : VARCHAR(30)
+    churn : TINYINT(1)
+    churn_date : DATE
+    subscription_date : DATE
+    anciennete_mois : INT
+    is_current : TINYINT(1)
+}
+
+dim(dim_plan) {
+    * plan_sk : INT <<PK>>
+    --
+    plan_id : VARCHAR(20) <<UK>>
+    plan_name : VARCHAR(100)
+    type_abonnement : VARCHAR(30)
+    country : VARCHAR(100)
+    monthly_fee : DECIMAL(10,2)
+    data_quota_gb : DECIMAL(8,2)
+    call_minutes : INT
+    categorie_prix : VARCHAR(20)
+    is_current : TINYINT(1)
+}
+
+dim(dim_tower) {
+    * tower_sk : INT <<PK>>
+    --
+    tower_id : VARCHAR(20) <<UK>>
+    tower_name : VARCHAR(100)
+    city : VARCHAR(100)
+    region : VARCHAR(100)
+    country : VARCHAR(100)
+    technology : VARCHAR(10)
+    capacity_users : INT
+    status : VARCHAR(20)
+    zone_type : VARCHAR(30)
+}
+
+dim(dim_localisation) {
+    * location_sk : INT <<PK>>
+    --
+    city : VARCHAR(100)
+    region : VARCHAR(100)
+    country : VARCHAR(100)
+    zone_type : VARCHAR(30)
+    population_zone : VARCHAR(30)
+}
+
+' ==============================================
+' FAIT (centrale)
+' ==============================================
+
+fact(fact_usage) {
+    * usage_sk : BIGINT <<PK>>
+    * date_sk : INT <<PK>> <<FK>>
+    --
+    subscriber_sk : INT <<FK>>
+    tower_sk : INT <<FK>>
+    plan_sk : INT <<FK>>
+    location_sk : INT <<FK>>
+    usage_id : VARCHAR(20)
+    duration_sec : INT
+    duration_min : DECIMAL(8,2) <<generated>>
+    data_mb : DECIMAL(12,4)
+    data_gb : DECIMAL(12,6) <<generated>>
+    amount_fcfa : DECIMAL(12,2)
+    event_type : VARCHAR(30)
+    status : VARCHAR(20)
+    network_type : VARCHAR(10)
+    roaming : TINYINT(1)
+    _loaded_at : TIMESTAMP
+}
+
+' ==============================================
+' RELATIONS avec cardinalités en notation Chen
+' ==============================================
+
+' (1,N) = Une date peut avoir plusieurs usages
+dim_date "1" -- "N" fact_usage : "a lieu le"
+
+' (1,N) = Un abonné peut avoir plusieurs usages
+dim_subscriber "1" -- "N" fact_usage : "appartient à"
+
+' (1,N) = Une antenne peut avoir plusieurs usages
+dim_tower "1" -- "N" fact_usage : "passe par"
+
+' (1,N) = Un plan peut avoir plusieurs usages
+dim_plan "1" -- "N" fact_usage : "facturé selon"
+
+' (1,N) = Une zone peut avoir plusieurs usages
+dim_localisation "1" -- "N" fact_usage : "situé dans"
+
+@enduml
